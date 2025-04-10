@@ -17,7 +17,7 @@ public interface IProjectService
 public class ProjectService(IProjectRepository projectRepository) : IProjectService
 {
     private readonly IProjectRepository _projectRepository = projectRepository;
-    private readonly IStatusService _statusService = StatusService;
+    private readonly IStatusService _statusService = statusService;
 
 
     public async Task<ProjectResult> CreateProjectAsync(AddProjectFormData formData)
@@ -27,6 +27,7 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
 
         var projectEntity = formData.MapTo<ProjectEntity>();
         var status = await _statusService.GetStatusByIdAsync(1);
+        var status = StatusResult.Result;
 
         projectEntity.StatusId = status!.Id;
 
@@ -34,7 +35,7 @@ public class ProjectService(IProjectRepository projectRepository) : IProjectServ
 
         return result.Succeded
             ? new ProjectResult { Succeded = true, StatusCode = 201 }
-            : new ProjectResult { Succeded = false, StatusCode = result.StatusCode, Error = result.Error }
+            : new ProjectResult { Succeded = false, StatusCode = result.StatusCode, Error = result.Error };
 
     }
 
