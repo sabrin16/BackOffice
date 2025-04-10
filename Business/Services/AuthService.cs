@@ -5,7 +5,14 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Business.Services;
 
-public class AuthService(IUserService userService, SignInManager<UserEntity> signInManager)
+public interface IAuthService
+{
+    Task<SignInResult> SignInAsync(SignInFormData formData);
+    Task<AuthResult> SignOutAsync();
+    Task<AuthResult> SignUpAsync(SignUpFormData formData);
+}
+
+public class AuthService(IUserService userService, SignInManager<UserEntity> signInManager) : IAuthService
 {
     private readonly IUserService _userService = userService;
     private readonly SignInManager<UserEntity> _signInManager = signInManager;
